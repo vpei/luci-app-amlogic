@@ -31,11 +31,11 @@ make V=99
 
 ## Custom config
 
-- Supports OpenWrt firmware packaged by [flippy](https://github.com/unifreq/openwrt_packit) and [ophub](https://github.com/ophub/amlogic-s9xxx-openwrt) related scripts. The online update file download url of `OpenWrt firmware` and `kernel` can be customized as your own github.com repository. The config information is stored in the [/etc/config/amlogic](https://github.com/ophub/luci-app-amlogic/blob/main/luci-app-amlogic/root/etc/config/amlogic) file. When the OpenWrt firmware is compiled, you can directly modify the relevant values in this file to specify:
+- Supports OpenWrt firmware packaged by [flippy](https://github.com/unifreq/openwrt_packit) and [ophub](https://github.com/ophub/amlogic-s9xxx-openwrt) related scripts. The online update file download url of `OpenWrt firmware` and `kernel` can be customized as your own github.com repository. The config information is stored in the [/etc/config/amlogic](luci-app-amlogic/root/etc/config/amlogic) file. When the OpenWrt firmware is compiled, you can directly modify the relevant values in this file to specify:
 
 ```yaml
 # 1.Set the download repository of the OpenWrt files to your github.com
-sed -i "s|https.*/OpenWrt|https://github.com/USERNAME/REPOSITORY|g" package/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|amlogic_firmware_repo.*|amlogic_firmware_repo 'https://github.com/USERNAME/REPOSITORY'|g" package/luci-app-amlogic/root/etc/config/amlogic
 
 # 2.Set the keywords of Tags in your github.com Releases
 sed -i "s|ARMv8|RELEASES_TAGS_KEYWORD|g" package/luci-app-amlogic/root/etc/config/amlogic
@@ -44,7 +44,7 @@ sed -i "s|ARMv8|RELEASES_TAGS_KEYWORD|g" package/luci-app-amlogic/root/etc/confi
 sed -i "s|.img.gz|.OPENWRT_SUFFIX|g" package/luci-app-amlogic/root/etc/config/amlogic
 
 # 4.Set the download path of the kernel in your github.com repository
-sed -i "s|opt/kernel|https://github.com/USERNAME/REPOSITORY/KERNELPATH|g" package/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|amlogic_kernel_path.*|amlogic_kernel_path 'https://github.com/USERNAME/REPOSITORY'|g" package/luci-app-amlogic/root/etc/config/amlogic
 ```
 
 - When compiling OpenWrt, modify the above 4 points to realize customization. The above information can also be modified in the settings of the plug-in after log in to the openwrt `System` → `Amlogic Service`.
@@ -55,7 +55,7 @@ Plug-in settings 4 items: OpenWrt firmware download URL, kernel download URL, Ve
 
 ### The OpenWrt firmware download URL contains three options
 
-1. OpenWrt firmware download address: Fill in the repository of your OpenWrt compilation on github (or other compiler's repository), such as `https://github.com/breakings/OpenWrt`. The `OpenWrt Compiler author` button on the plugin welcome home page will link to the website filled in here (Automatically update the link according to the filled website), so that everyone can find the author of the firmware for communication and learning.
+1. OpenWrt firmware download repository: Fill in the repository of your OpenWrt compilation on github (or other compiler's repository), such as `https://github.com/breakings/OpenWrt`. The `OpenWrt Compiler author` button on the plugin welcome home page will link to the website filled in here (Automatically update the link according to the filled website), so that everyone can find the author of the firmware for communication and learning.
 
 2. Keywords of Tags in Releases: to be able to distinguish other x86, R2S and other firmware, Make sure that the corresponding OpenWrt firmware can be found using this keyword.
 
@@ -65,7 +65,7 @@ Plug-in settings 4 items: OpenWrt firmware download URL, kernel download URL, Ve
 
 ### The kernel download URL is an option
 
-- Download path of OpenWrt kernel: You can fill in the full path `https://github.com/breakings/OpenWrt/tree/main/opt/kernel`. If it is in the same repository as the OpenWrt firmware, the path can also be abbreviated `opt/kernel`. It can also independently point to the kernel storage path in any repository  `https://github.com/ophub/kernel/tree/main/pub/stable`. The kernel files can be stored in the specified path in the form of a folder or a list.
+- OpenWrt kernel download repository: You can fill in the full url `https://github.com/breakings/OpenWrt` or `breakings/OpenWrt` . The plugin will automatically download the general kernel from [kernel_stable](https://github.com/breakings/OpenWrt/releases/tag/kernel_stable) in Releases, and the rk3588 specific kernel from [kernel_rk3588](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk3588).
 
 ### The version branch selection as an option
 
