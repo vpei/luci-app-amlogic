@@ -25,27 +25,63 @@
 #
 # Set the plugin download directory
 tmp_dir="/root"
+
+# Set github API default value
+github_page="1"
+github_per_page="100"
+
+# Create a file to store the results
+all_plugin_list="${tmp_dir}/josn_api_plugin"
+rm -f ${all_plugin_list}
 #
 #========================================================================================
 
 process_msg() {
     echo -e "${1}"
-    [[ -z "${2}" ]] || exit 1
+    [[ -n "${2}" && "${2}" -eq "1" ]] && exit 1
 }
 
 query_version() {
     process_msg "01. Start querying plugin version..."
 
-    # Query the latest version
-    latest_version="$(
-        curl -s \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/ophub/luci-app-amlogic/releases |
-            jq -r '.[].tag_name' |
-            sort -rV | head -n 1
-    )"
-    [[ -n "${latest_version}" ]] || process_msg "01.01 Querying the plugin version failed." "1"
-    process_msg "01.01 Latest version: ${latest_version}"
+    # Get the release list
+    while true; do
+        response="$(
+            curl -s -L \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/repos/ophub/luci-app-amlogic/releases?per_page=${github_per_page}&page=${github_page}"
+        )"
+
+        # Check if the response is empty or an error occurred
+        if [[ -z "${response}" ]] || [[ "${response}" == *"Not Found"* ]]; then
+            process_msg "01.01 Query failed, please try again." "1"
+        else
+            echo "${response}" |
+                jq -r '.[].tag_name' | sort -rV \
+                >>${all_plugin_list}
+        fi
+
+        # Check if the current page has fewer results than the per_page limit
+        if [[ "$(echo "${response}" | jq '. | length')" -lt "${github_per_page}" ]]; then
+            break
+        else
+            github_page="$((github_page + 1))"
+        fi
+    done
+
+    # Get the latest version
+    if [[ -s "${all_plugin_list}" ]]; then
+        latest_version="$(cat ${all_plugin_list} | sort -rV | head -n 1)"
+        if [[ -z "${latest_version}" ]]; then
+            process_msg "01.02 Query failed, please try again." "1"
+        else
+            process_msg "01.03 Latest version: ${latest_version}"
+            sleep 2
+        fi
+    else
+        process_msg "01.04 The search results for releases are empty." "1"
+    fi
 }
 
 download_plugin() {
@@ -87,6 +123,7 @@ install_plugin() {
     # Delete cache file
     rm -rf /tmp/luci-indexcache /tmp/luci-modulecache/* 2>/dev/null
     rm -f ${tmp_dir}/*.ipk
+    rm -f ${all_plugin_list}
 
     process_msg "03.01 The plugin has been installed successfully, Path: System -> Amlogic Service."
 }

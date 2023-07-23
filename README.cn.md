@@ -66,6 +66,7 @@ sed -i "s|amlogic_kernel_path.*|amlogic_kernel_path 'https://github.com/USERNAME
 ### 内核下载地址为一个选项
 
 - OpenWrt 内核下载仓库：可以填写完整路径 `https://github.com/breakings/OpenWrt` 或 `breakings/OpenWrt` 。插件将自动从 Releases 的 [kernel_stable](https://github.com/breakings/OpenWrt/releases/tag/kernel_stable) 里下载通用内核，从 [kernel_rk3588](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk3588) 里下载 rk3588 专用内核。
+- 自定义内核下载 Tags：可以在 OpenWrt 系统的 `/etc/flippy-openwrt-release` 文件中添加 `KERNEL_TAGS='xxx'` 指定内核下载 Tags。如果进行了指定，插件将自动从 Releases 中指定的 `kernel_xxx` 里下载内核。
 
 ### 版本分支选择为一个选项
 
@@ -95,7 +96,7 @@ sed -i "s|amlogic_kernel_path.*|amlogic_kernel_path 'https://github.com/USERNAME
 
 3. 在线下载更新：点击 `仅更新宝盒插件` 按钮，可以把晶晨宝盒插件更新至最新版本；点击 `仅更新系统内核` 将根据 `插件设置` 中选择的内核分支下载对应的内核；点击 `完整更新全系统` 将根据 `插件设置` 中的下载站点下载最新固件。
 
-4. 备份固件配置：点击 `下载备份` 按钮，可以把当前设备中 OpenWrt 的配置信息备份到本地（此备份文件可以在 `手动上传更新` 中上传使用，用于恢复系统配置）；点击 `创建快照`，`还原快照` 和 `删除快照` 按钮可以对快照进行相应管理。快照会记录当前 OpenWrt 系统中 `/etc` 目录下的全部配置信息，方便以后一键恢复至当前配置状态，作用和 `下载备份` 类似，仅保存在当前系统中，不支持下载使用。
+4. 备份固件配置：点击 `打开列表` 按钮，可以编辑备份列表；点击 `下载备份` 按钮，可以把当前设备中 OpenWrt 的配置信息备份到本地；点击 `上传备份` 按钮，可以将备份的配置文件上传，恢复系统配置。点击 `创建快照`，`还原快照` 和 `删除快照` 按钮可以对快照进行相应管理。快照会记录当前 OpenWrt 系统中 `/etc` 目录下的全部配置信息，方便以后一键恢复至当前配置状态，作用和 `下载备份` 类似，仅保存在当前系统中，不支持下载使用。
 
 5. 插件设置：设置插件的内核下载地址等信息，详见 `插件设置说明` 的相关介绍。
 
