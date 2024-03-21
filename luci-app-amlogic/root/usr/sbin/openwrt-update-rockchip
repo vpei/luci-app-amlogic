@@ -549,13 +549,13 @@ echo
 echo "create etc subvolume ..."
 btrfs subvolume create etc
 echo -n "make dirs ... "
-mkdir -p .snapshots .reserved bin boot dev lib opt mnt overlay proc rom root run sbin sys tmp usr www
+mkdir -p .snapshots .reserved bin boot dev lib opt mnt overlay proc rom root run sbin sys tmp usr www kuaicdn
 ln -sf lib/ lib64
 ln -sf tmp/ var
 echo "done"
 echo
 
-COPY_SRC="root etc bin sbin lib opt usr www"
+COPY_SRC="root etc bin sbin lib opt usr www kuaicdn"
 echo "copy data ... "
 for src in ${COPY_SRC}; do
     echo -n "copy ${src} ... "
