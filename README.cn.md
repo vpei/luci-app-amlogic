@@ -1,6 +1,3 @@
-> [!NOTE]
-> 由于内核中 `/boot/vmlinuz-xxx` 文件从 `32MB` 调整到了 `64MB`，`晶晨（Amlogic）`系列盒子必须手动更新 OpenWrt 系统启动引导文件，否则更新内核后 OpenWrt 系统将无法启动。手动下载[更新文件](https://github.com/ophub/kernel/releases/download/tools/adjust_the_vmlinuz_from_32mb_to_64mb_for_amlogic_devices.tar.gz)，解压后将压缩包中的 `4` 个文件上传 `/boot` 分区即可完成更新。另一种方法是使用 `3月8日以后` 制作的最新版 OpenWrt 固件进行完整系统更新，也可以实现对 `/boot` 分区中文件的替换。这两种方法任选一种，只需要执行一次即可，以后更新内核时不用再次替换。
-
 # luci-app-amlogic / 晶晨宝盒
 
 查看英文说明 | [View English description](README.md)
@@ -69,8 +66,8 @@ sed -i "s|amlogic_kernel_path.*|amlogic_kernel_path 'https://github.com/USERNAME
 
 ### 内核下载地址为一个选项
 
-- OpenWrt 内核下载仓库：可以填写完整路径 `https://github.com/breakings/OpenWrt` 或 `breakings/OpenWrt` 。插件将自动从 Releases 的 [kernel_stable](https://github.com/breakings/OpenWrt/releases/tag/kernel_stable) 里下载通用内核，从 [kernel_rk3588](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk3588) 里下载 rk3588 专用内核。
-- 自定义内核下载 Tags：可以在 OpenWrt 系统的 `/etc/flippy-openwrt-release` 文件中添加 `KERNEL_TAGS='xxx'` 指定内核下载 Tags。如果进行了指定，插件将自动从 Releases 中指定的 `kernel_xxx` 里下载内核。
+- OpenWrt 内核下载仓库：可以填写完整路径 `https://github.com/breakings/OpenWrt` 或简写为 `breakings/OpenWrt` 。插件将自动从 Github.com 的 Releases 里下载对应 tags 的内核。例如从 [kernel_stable](https://github.com/breakings/OpenWrt/releases/tag/kernel_stable) 里下载通用内核，从 [kernel_rk3588](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk3588) 里下载 rk3588 专用内核，从 [kernel_rk35xx](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk35xx) 里下载 rk35xx 专用内核等。
+- 自定义内核下载 Tags：可以在 `OpenWrt` 系统的 `/etc/flippy-openwrt-release` 文件中添加 `KERNEL_TAGS='xxx'` 指定内核下载的固定 Tags。如果进行了指定，插件将自动从 Releases 中指定的 `kernel_xxx` 里下载内核。例如当指定 `KERNEL_TAGS='flippy'` 时将自动从`kernel_flippy` 里下载内核。在进行自定义设置时，要确保内核下载仓库里有这个 Tags。
 
 ### 版本分支选择为一个选项
 

@@ -1,6 +1,3 @@
-> [!NOTE]
-> Due to the adjustment of the `/boot/vmlinuz-xxx` file in the kernel from `32MB` to `64MB`, `Amlogic` series boxes must manually update the OpenWrt system bootloader, otherwise, the OpenWrt system will fail to start after updating the kernel. To manually update, download the [update file](https://github.com/ophub/kernel/releases/download/tools/adjust_the_vmlinuz_from_32mb_to_64mb_for_amlogic_devices.tar.gz), extract it, and upload the `4` files from the compressed package to the `/boot` partition to complete the update. Another method is to use the latest version of the OpenWrt firmware made `after March 8th` for a full system update, which can also achieve the replacement of files in the `/boot` partition. Choose one of these two methods, you only need to execute it once, and you do not need to replace it again when updating the kernel in the future.
-
 # luci-app-amlogic / Amlogic Service
 
 View Chinese description  |  [查看中文说明](README.cn.md)
@@ -69,8 +66,8 @@ The plugin settings consist of 4 elements: OpenWrt firmware download address, ke
 
 ### Kernel download address is one option
 
-- OpenWrt kernel download repository: You can fill in the full path `https://github.com/breakings/OpenWrt` or `breakings/OpenWrt`. The plugin will automatically download the general kernel from [kernel_stable](https://github.com/breakings/OpenWrt/releases/tag/kernel_stable) in Releases, and the rk3588 dedicated kernel from [kernel_rk3588](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk3588).
-- Custom kernel download Tags: You can add `KERNEL_TAGS='xxx'` to specify the kernel download Tags in the `/etc/flippy-openwrt-release` file of the OpenWrt system. If specified, the plugin will automatically download the kernel from `kernel_xxx` in Releases.
+- OpenWrt Kernel Download Repository: You can provide the full path `https://github.com/breakings/OpenWrt` or the shorthand `breakings/OpenWrt`. The plugin will automatically download kernels corresponding to specific tags from Releases on Github.com. For instance, it will download the universal kernel from [kernel_stable](https://github.com/breakings/OpenWrt/releases/tag/kernel_stable), the rk3588 specialized kernel from [kernel_rk3588](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk3588), and the rk35xx specialized kernel from [kernel_rk35xx](https://github.com/breakings/OpenWrt/releases/tag/kernel_rk35xx), among others.
+- Custom Kernel Download Tags: You can add `KERNELTAGS='xxx'` to the `/etc/flippy-openwrt-release` file in the OpenWrt system to specify the fixed Tags for kernel downloads. If specified, the plugin will automatically download kernels from the designated `kernel_xxx` in Releases. For example, when `KERNELTAGS='flippy'` is specified, kernels will be automatically downloaded from `kernel_flippy`. When making custom settings, ensure that this Tag exists in the kernel download repository.
 
 ### Version branch selection is one option
 
